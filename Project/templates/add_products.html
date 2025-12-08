@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Item Add/Remove{% endblock %}
+
+
+{% block content %}
+
+<h1>Add Items</h1>
+
+<form method="POST">
+    <label for="item_name">Name</label>
+    <input type="text" id="item_name" name="item_name" class="form-control" placeholder="Enter name" required>
+
+    <label for="category_id">Category:</label>
+    <select id="category_id" name="category_id" class="form-control" required>
+        <option value="">-- Choose a Category --</option>
+        
+
+        {% for category in categories %}
+            <option value="{{ category.id }}">
+                {{ category.category_name }}
+            </option>
+        {% endfor %}
+
+        
+    </select>
+
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+        <button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Add Item</button>
+    </div>
+
+
+</form>
+
+    <br>
+    <br>
+    <div style="text-align: center;">
+        <a href="see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Back to List</button></a>
+    </div>
+
+{% endblock %}

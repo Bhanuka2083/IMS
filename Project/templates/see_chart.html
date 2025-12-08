@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Sales Chart{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">📈 Dynamic Sales Chart</h1>
+
+    <form id="chartForm" style="margin-bottom: 30px;">
+        <div class="row">
+            <div class="col-md-6">
+                <label for="stock_select">Select Items (Hold Ctrl/Cmd):</label>
+                {# This list is populated by the 'stocks' variable from the Flask view #}
+                <select name="stock_ids" id="stock_select" multiple class="form-control" required style="min-height: 150px;">
+                    {% for stock in stocks %}
+                        <option value="{{ stock.id }}">{{ stock.stock_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" class="form-control mb-3">
+                
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" class="form-control mb-3">
+                
+                <button type="submit" class="btn btn-success w-100">Generate Chart</button>
+            </div>
+        </div>
+    </form>
+
+    <hr>
+    
+    <div id="chartContainer" style="width: 100%;">
+        <canvas id="salesChart"></canvas>
+    </div>
+
+    <div style="text-align: center;">
+        <a href="see_sales"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Sales list</button></a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <script>
+        const form = document.getElementById('chartForm');
+        const chartCanvas = document.getElementById('salesChart');
+        let salesChartInstance = null;
+        
+        // --- Utility Functions ---
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // --- Data Formatting Function ---
+
+        function prepareChartData(data) {
+            // 1. Get unique dates and item names
+            const uniqueDates = [...new Set(data.map(item => item.date))].sort();
+            const itemNames = [...new Set(data.map(item => item.item_name))];
+
+            // 2. Initialize datasets
+            const datasets = itemNames.map(name => ({
+                label: name,
+                data: [],
+                borderColor: getRandomColor(),
+                tension: 0.1,
+                fill: false,
+                borderWidth: 2
+            }));
+
+            // 3. Populate datasets, ensuring alignment with dates
+            datasets.forEach(dataset => {
+                const itemName = dataset.label;
+                
+                uniqueDates.forEach(date => {
+                    const record = data.find(item => item.item_name === itemName && item.date === date);
+                    // Push the quantity, defaulting to 0 if no sale on that date
+                    dataset.data.push(record ? record.quantity : 0);
+                });
+            });
+            
+            return {
+                labels: uniqueDates,
+                datasets: datasets
+            };
+        }
+        
+        // --- Data Fetching Function ---
+
+        async function fetchChartData(formData) {
+            try {
+                const response = await fetch('/sales_chart_data', {
+                    method: 'POST',
+                    body: formData, // Send the compiled form data
+                });
+
+                const responseData = await response.json();
+
+                if (!response.ok) {
+                    alert('Error: ' + responseData.error);
+                    return [];
+                }
+
+                return responseData;
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('An unexpected error occurred while fetching data.');
+                return [];
+            }
+        }
+        
+        // --- Rendering Function ---
+
+        function renderChart(chartData) {
+            // Destroy old chart instance
+            if (salesChartInstance) {
+                salesChartInstance.destroy();
+            }
+            
+            // Render new chart
+            salesChartInstance = new Chart(chartCanvas.getContext('2d'), {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Item Sales Over Time' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Date' } },
+                        y: { 
+                            title: { display: true, text: 'Quantity Sold' },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Event Listener ---
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            // Manually gather selected stock IDs from the multi-select
+            const stockSelect = document.getElementById('stock_select');
+            const selectedIds = Array.from(stockSelect.options)
+                .filter(option => option.selected)
+                .map(option => option.value);
+            
+
+            if (selectedIds.length === 0) {
+                alert("Error: Please select at least one item.");
+                return; // Stop the function here if nothing is selected
+            }
+
+            
+            // Create POST data object
+            const postData = new URLSearchParams();
+            selectedIds.forEach(id => postData.append('stock_ids', id));
+            postData.append('start_date', document.getElementById('start_date').value);
+            postData.append('end_date', document.getElementById('end_date').value);
+
+            const rawData = await fetchChartData(postData);
+            
+            if (rawData.length > 0) {
+                const formattedData = prepareChartData(rawData);
+                renderChart(formattedData);
+            } else if (selectedIds.length > 0) {
+                alert("No sales recorded for the selected items in this period.");
+                if (salesChartInstance) salesChartInstance.destroy();
+            }
+        });
+
+    </script>
+{% endblock %}

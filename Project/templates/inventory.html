@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+
+<h1>Inventory</h1>
+
+<br>
+<br>
+
+<div class="d-block">
+        <br>
+
+            <table class="table is_fullwidth">
+
+                <thead>
+                    <tr>
+                        <th>
+                            <a href="{{ url_for('views.see_inventory', 
+                                sort='name', 
+                                direction= 'desc' if current_sort == 'name' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Stock Name
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>Unit Price</th>
+                        <th>Selling Price</th>
+                        <th>
+                            <a href="{{ url_for('views.see_inventory', 
+                                sort='quantity', 
+                                direction= 'desc' if current_sort == 'quantity' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Quantity
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('views.see_inventory', 
+                                sort='salequantity', 
+                                direction= 'desc' if current_sort == 'salequantity' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Saled Quantity
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('views.see_inventory', 
+                                sort='location', 
+                                direction= 'desc' if current_sort == 'location' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Location
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>Admin Name</th>
+                        
+                    </tr>
+                </thead>
+                
+                {% if stocks|length > 0 %}
+
+                <tbody>
+
+                    {% for stock in stocks %}
+
+                    <tr>
+                        <td>{{ stock.stock_name }}</td>
+                        <td>${{ stock.unit_price }}</td>
+                        <td>${{ stock.selling_price }}</td>
+                        <td>{{ stock.quantity }}</td>
+                        <td>{{ stock.saled_quantity }}</td>
+                        <td>{{ stock.location.location_name }}</td>
+                        <td>{{ stock.user.username }}</td>
+                        
+                        
+                        
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <smal class="text-muted">No stocks...</smal>
+                        
+                    {% endif %}
+
+                </tbody>
+                
+
+
+            </table>
+
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="see_sales"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Check Sales</button></a>
+        </div>
+        <br>
+        <br>
+        <br>
+        
+        <div style="text-align: center;">
+            <a href="admin_panel"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 200px; border-radius: 25px;"  >Back to Admin Panel</button></a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

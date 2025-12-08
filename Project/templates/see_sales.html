@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}See Sales{% endblock %}
+
+{% block content %}
+
+<h1>Sales list</h1>
+
+<br>
+<br>
+
+
+<div class="d-block">
+        <br>
+
+        <table class="table is_fullwidth">
+
+            <thead>
+                <tr>
+                    <th>Sale Name</th>
+                    <th>Buyer Name</th>
+                    <th>Date</th>
+                    <th>Product Type</th>
+                    <th>Quantity</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            
+            <!-- Iterate over the single list of sales records prepared in the route -->
+            {% if report_items|length > 0 %}
+
+            <tbody>
+
+                {% for item in report_items %}
+
+                <tr>
+                    <!-- Access attributes directly from the item dictionary -->
+                    <td>{{ item.sale_name }}</td>
+                    <td>{{ item.buyer_name }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.product_type }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>${{ item.total_amount }}</td>
+                    <td>
+                        <!-- Action button area -->
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+            
+            {% else %}
+            <!-- Display this if the list is empty -->
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <small class="text-muted">No sales records...</small>
+                    </td>
+                </tr>
+            </tbody>
+            {% endif %}
+
+
+        </table>
+
+
+        <br>
+
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="admin_panel"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 200px; border-radius: 25px;"  >Back to Admin Panel</button></a>
+        </div>
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="{{ url_for('views.download_sales_report') }}" class="btn btn-primary">
+                ⬇️ Download Sales Report (CSV)
+            </a>
+        </div>
+        
+{% endblock %}
+

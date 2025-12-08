@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+
+<h1>Notifications</h1>
+
+<br>
+<br>
+
+<div class="d-block">
+        <br>
+
+            <table class="table is_fullwidth">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>
+                            <a href="{{ url_for('views.check_notifications', 
+                                sort='message', 
+                                direction= 'desc' if current_sort == 'message' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Message
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('views.check_notifications', 
+                                sort='categories', 
+                                direction= 'desc' if current_sort == 'categories' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Category
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        <th>
+                            <a href="{{ url_for('views.check_notifications', 
+                                sort='date', 
+                                direction= 'desc' if current_sort == 'date' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                                Date
+                                {% if current_sort == 'id' %}
+                                    {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                                {% endif %}
+                            </a>
+                        </th>
+                        
+                    </tr>
+                </thead>
+                
+                {% if messages|length > 0 %}
+
+                <tbody>
+
+                    {% for message in messages %}
+
+                    <tr>
+                        <td>{{ message.id }}</td>
+                        <td>{{ message.message }}</td>
+                        <td>---{{ message.category }}---</td>
+                        <td>{{ message.date_created }}</td>                        
+                        
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <smal class="text-muted">No Notifications...</smal>
+                        
+                    {% endif %}
+
+                </tbody>
+                
+
+
+            </table>
+        <br>
+        <br>
+        <br>
+        
+        <div style="text-align: center;">
+            <a href="admin_panel"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 200px; border-radius: 25px;"  >Back to Admin Panel</button></a>
+        </div>
+
+    </div>
+</div>
+
+<br>
+<br>
+<br>
+
+{% endblock %}

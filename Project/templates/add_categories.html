@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Add categories{% endblock %}
+
+
+{% block content %}
+
+<h1>Add Category</h1>
+
+<form method="POST">
+    <label for="category_name">Name</label>
+    <input type="text" id="category_name" name="category_name" class="form-control" placeholder="Enter name" required>
+
+    <br>
+
+        <div style="text-align: center;">
+            <a href="see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Add Category</button></a>
+        </div>
+</form>
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Back to List</button></a>
+        </div>
+
+
+
+{% endblock %}

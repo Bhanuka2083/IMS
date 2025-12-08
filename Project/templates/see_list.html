@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}See lists{% endblock %}
+
+{% block content %}
+
+<h1>Current Items and Categories list</h1>
+
+<br>
+<br>
+
+<div class="d-flex" style="justify-content: space-between; margin: 0 auto; column-gap: 20px;">
+    <div id="items">
+        <h3>Items</h3>
+        <br>
+        {% if items|length > 0 %}
+        {% for item in items %}
+
+            <div style="border-radius: 10px; padding: 10px; border: 1px solid #08a188; margin: 5px;" class="d-flex justify-content-between align-items-center ">
+                
+                <span style="font-weight: 600;">ID:{{ item.id }} - {{ item.item_name }} <br><span style="font-weight: 400; font-size: 12px;">Category ID - {{item.category.category_name}}</span></span>
+                
+
+                <div class="btn-group" style="margin-left: 0%; margin-bottom: 10px;" >
+                    <button type="button" class="bi bi-three-dots" data-bs-toggle="dropdown" style="border: none; background-color: transparent;"></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="delete_product/{{item.id}}" class="dropdown-item">Delete</a></li>
+                        <li><a href="update_item/{{item.id}}" class="dropdown-item">Update</a></li>
+                    </ul>
+                </div>
+
+                </div>
+        {% endfor %}
+        {% else %}
+            <smal class="text-muted">No items...</smal>
+        {% endif %}
+
+        <br>
+        <div style="text-align: center;">
+            <a href="add_products"><button type="button" name="add_items" id="add_items" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Add Items</button></a>
+        </div>
+
+    </div>
+
+
+    <div id="categories">
+        <h3>Categories</h3>
+        <br>
+        {% if categories|length > 0 %}
+            {% for category in categories %}
+
+            <div style="border-radius: 10px; padding: 10px; border: 1px solid #08a188; margin: 5px;" class="d-flex justify-content-between align-items-center">
+                <span style="font-weight: 600;">ID:{{ category.id }} - {{ category.category_name }}</span>
+                
+                
+                <div class="btn-group" style="margin-left: 0%; margin-top: 0px; align-items: end; justify-content: end;" >
+                    <button type="button" class="bi bi-three-dots" data-bs-toggle="dropdown" style="border: none; background-color: transparent;"></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="delete_category/{{category.id}}" class="dropdown-item">Delete</a></li>
+                        <li><a href="update_categories/{{category.id}}" class="dropdown-item">Update</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        {% endfor %}
+        {% else %}
+            <smal class="text-muted">No categories...</smal>
+        {% endif %}
+
+        <br>
+        <div style="text-align: center;">
+            <a href="add_categories"><button type="button" name="add_category" id="add_category" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"   >Add Categories</button></a>
+        </div>
+
+
+    </div>
+    <div id="locations">
+        <h3>Locations</h3>
+        <br>
+        {% if locations|length > 0 %}
+            {% for location in locations %}
+
+            <div style="border-radius: 10px; padding: 10px; border: 1px solid #08a188; margin: 5px;" class="d-flex justify-content-between align-items-center">
+                <span style="font-weight: 600;">ID:{{ location.id }} - {{ location.location_name }}</span>
+                
+                
+                <div class="btn-group" style="margin-left: 0%; margin-top: 0px; align-items: end; justify-content: end;" >
+                    <button type="button" class="bi bi-three-dots" data-bs-toggle="dropdown" style="border: none; background-color: transparent;"></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="delete_location/{{location.id}}" class="dropdown-item">Delete</a></li>
+                        <li><a href="update_location/{{location.id}}" class="dropdown-item">Update</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            {% endfor %}
+        {% else %}
+            <smal class="text-muted">No locations...</smal>
+        {% endif %}
+
+        <br>
+        <div style="text-align: center;">
+            <a href="add_locations"><button type="button" name="add_locations" id="add_locations" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Add Location</button></a>
+        </div>
+
+
+    </div>
+
+</div>
+
+<br>
+<br>
+<br>
+    <br>
+    <div style="text-align: center;">
+        <a href="admin_panel"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 200px; border-radius: 25px;"  >Back to Admin Panel</button></a>
+    </div
+
+
+{% endblock %}

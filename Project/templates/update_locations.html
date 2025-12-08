@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Update locations{% endblock %}
+
+
+{% block content %}
+
+<h1>Update Location</h1>
+
+<form method="POST">
+    <label for="new_location_name">Name</label>
+    <input type="text" id="new_location_name" name="new_location_name" class="form-control" value="{{ locations.location_name }}" required>
+
+    <br>
+
+        <div style="text-align: center;">
+            <a href="see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Update Location</button></a>
+        </div>
+</form>
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="/see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Back to List</button></a>
+        </div>
+
+
+
+{% endblock %}

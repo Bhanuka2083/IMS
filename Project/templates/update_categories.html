@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Update categories{% endblock %}
+
+
+{% block content %}
+
+<h1>Update Category</h1>
+
+<form method="POST">
+    <label for="new_category_name">Name</label>
+    <input type="text" id="new_category_name" name="new_category_name" class="form-control" value="{{ categories.category_name }}" required>
+
+    <br>
+
+        <div style="text-align: center;">
+            <a href="see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Update Category</button></a>
+        </div>
+</form>
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="/see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Back to List</button></a>
+        </div>
+
+
+
+{% endblock %}

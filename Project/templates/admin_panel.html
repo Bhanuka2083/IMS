@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <style>
+        p{
+            width: 100%;
+            color: black;
+            font-size: 24px;
+            font-weight: 400;
+            text-align: justify;
+            align-content: center;
+            margin: 0 auto;
+        }
+        .card-icon{
+            margin: 0 16px;
+        }
+        .card-icon i{
+            font-size: 48px;
+        }
+        .card{
+            background-color: #0fc9aa;
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 48px 0;
+            border-radius: 64px 0;
+            background: linear-gradient(to left, rgb(5, 170, 156) 50%, black 50%);
+            background-size: 200%;
+            background-position: right;
+            box-shadow: none;
+            transition: background-position 0.3s ease-in-out;
+            /* transition: box-shadow 0.3s ease-in-out; */
+        }
+        
+        .card:hover{
+            background-position: left;
+            box-shadow: rgb(5, 170, 156) 2px 2px 70px;
+        }
+        .card p{
+            color: rgb(255, 255, 255);
+            font-size: 16px;
+            text-align: start;
+        }
+
+    </style>
+    {% endblock %}
+
+
+
+{% block title %}Admin Panel{% endblock %}
+
+
+
+{% block content %}
+<br>
+<h1>Wellcome {{username}},</h1>
+<br>
+<p>
+Welcome back, administrator ({{username}}). Use the cards below to manage items, stock, and notifications.<br>
+Quick overview: <strong>{{ total_items|default('-') }}</strong> items &middot; <strong>{{ low_stock|default(0) }}</strong> low-stock &middot; <strong>{{ notifi_count|default(0) }}</strong> notifications
+</p>
+<br>
+<br>
+<br>
+
+
+<!-- Service cards -->
+
+<div class="d-flex" style="justify-content: space-between; margin: 0 auto; column-gap: 20px; max-width: 100%;">
+
+    
+    <a href="see_list" style="text-decoration: none;">
+        <div class="card" style="width: 18rem; height: 24rem;">
+            <div class="card-icon"><i class="bi bi-arrow-up-circle"></i></div>
+            <div class="card-body">
+                <h5 class="card-title">Add/Remove Items</h5>
+                <p class="card-text">Add new Items, Categories and store Locations to the inventory or Remove existing Items, Categories and Locations from the inventory.</p>
+                <br>
+                <br>
+                <!-- <a href="see_list" class="btn btn-outline-light">Add/Remove Items</a> -->
+            </div>
+        </div>
+    </a>
+
+
+
+    <a href="see_stocks" style="text-decoration: none;">
+        <div class="card" style="width: 18rem; height: 24rem;">
+            <div class="card-icon"><i class="bi bi-database-fill-add"></i></div>
+            <div class="card-body">
+                <h5 class="card-title">Add/Remove Stock</h5>
+                <p class="card-text">Add new stocks to the inventory or Remove existing stocks from the inventory.</p>
+                <br>
+                <br>
+                <!-- <a href="see_stocks" class="btn btn-outline-light">Add/Remove Stock</a> -->
+            </div>
+        </div>
+
+    </a>
+
+
+
+    <a href="see_inventory" style="text-decoration: none;">
+        <div class="card" style="width: 18rem; height: 24rem;">
+            <div class="card-icon"><i class="bi bi-card-checklist"></i></div>
+            <div class="card-body">
+                <h5 class="card-title">Check Inventory</h5>
+                <p class="card-text">Check current Stock related details and Sales details of the inventory.</p>
+                <br>
+                <br>
+                <!-- <a href="see_inventory" class="btn btn-outline-light">Check Inventory</a> -->
+            </div>
+        </div>
+    </a>
+    
+
+
+    <a href="check_notifications" style="text-decoration: none;">
+        <div class="card" style="width: 18rem; height: 24rem;">
+            <div class="card-icon"><i class="bi bi-bell-fill"></i></div>
+            <div class="card-body">
+                <h5 class="card-title">Notifications</h5>
+                <p class="card-text">Check stock related notifications, and messages of the inventory.</p>
+                <br>
+                <br>
+                <!-- <a href="#" class="btn btn-outline-light">Notification</a> -->
+            </div>
+        </div>
+
+    </a>
+
+
+</div>
+
+
+<br>
+<br>
+    <br>
+    <div style="text-align: center;">
+        <a href="home"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;" >Back to Home</button></a>
+    </div
+
+
+    
+
+{% endblock %}

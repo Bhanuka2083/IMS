@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}See Stock{% endblock %}
+
+{% block content %}
+
+<h1>Current Stocks list</h1>
+
+<br>
+<br>
+
+
+<div class="d-block">
+        <br>
+
+        <table class="table is_fullwidth">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>
+                         <a href="{{ url_for('views.see_stocks', 
+                            sort='name', 
+                            direction= 'desc' if current_sort == 'name' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                            Stock Name
+                            {% if current_sort == 'quantity' %}
+                                {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>Unit Price</th>
+                    <th>Selling Price</th>
+                    <th>
+                        <a href="{{ url_for('views.see_stocks', 
+                            sort='quantity', 
+                            direction= 'desc' if current_sort == 'quantity' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                            Quantity
+                            {% if current_sort == 'quantity' %}
+                                {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="{{ url_for('views.see_stocks', 
+                            sort='ProductType', 
+                            direction= 'desc' if current_sort == 'ProductType' and current_direction == 'asc' else 'asc') }}" style="text-decoration: none;">
+                            Product Type
+                            {% if current_sort == 'quantity' %}
+                                {% if current_direction == 'asc' %}▲{% else %}▼{% endif %}
+                            {% endif %}
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+            
+            {% if stocks|length > 0 %}
+
+            <tbody>
+
+                {% for stock in stocks %}
+
+                <tr>
+                    <td>{{ stock.id }}</td>
+                    <td>{{ stock.stock_name }}</td>
+                    <td>${{ stock.unit_price }}</td>
+                    <td>${{ stock.selling_price }}</td>
+                    <td>{{ (stock.quantity) }}</td>
+                    <td>{{ stock.product.item_name }}</td>
+                    <td>
+                        <div class="btn-group" style="margin-left: 0%; margin-bottom: 10px;" >
+                            <button type="button" class="bi bi-three-dots" data-bs-toggle="dropdown" style="border: none; background-color: transparent;"></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="delete_stocks/{{ stock.id }}" class="dropdown-item">Delete</a></li>
+                                <li><a href="update_stock/{{ stock.id }}" class="dropdown-item">Update</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <smal class="text-muted">No stocks...</smal>
+                    
+                {% endif %}
+
+            </tbody>
+            
+
+
+        </table>
+
+
+
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="add_stock"><button type="button" name="add_items" id="add_items" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Add Stock</button></a>
+        </div>
+
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="admin_panel"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 200px; border-radius: 25px;"  >Back to Admin Panel</button></a>
+        </div>
+
+    </div>
+
+
+{% endblock %}

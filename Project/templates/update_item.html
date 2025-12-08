@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Update products{% endblock %}
+
+
+{% block content %}
+
+<h1>Update Product</h1>
+
+<form method="POST">
+    <label for="new_product_name">Name</label>
+    <input type="text" id="new_product_name" name="new_product_name" class="form-control" value="{{ products.item_name }}" required>
+
+    <label for="new_category_id">Category:</label>
+        <select id="new_category_id" name="new_category_id" class="form-control" required>
+            <option value="">-- Choose a Category --</option>
+            
+
+            {% for category in categories %}
+                <option value="{{ category.id }}">
+                    {{ category.category_name }}
+                </option>
+            {% endfor %}
+
+            
+        </select>
+
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+        <button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Update Item</button>
+    </div>
+
+
+</form>
+        <br>
+        <br>
+        <div style="text-align: center;">
+            <a href="/see_list"><button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff;" >Back to List</button></a>
+        </div>
+
+
+
+{% endblock %}

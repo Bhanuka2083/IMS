@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Sign{% endblock %}
+
+{% block content %}
+<h1>Sign Up...</h1>
+
+<form method="POST">
+    <h3  style="align-content: center;">
+    </h3>
+
+    <label for="username">Name</label>
+    <input type="text" id="username" name="username" class="form-control" placeholder="Enter name">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" class="form-control" placeholder="Enter email">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" class="form-control" placeholder="Enter password">
+    
+    <label for="password-again">Password Again</label>
+    <input type="password" id="password-again" name="password-again" class="form-control" placeholder="Enter password Again">
+
+    <br>
+    <br>
+
+    <div style="text-align: center;">
+        <button type="submit" name="submit" id="submit" class="btn" style="background-color: #08a188; color: #ffffff; height: 50px; width: 150px; border-radius: 25px;"  >Sign Up</button>
+    </div>
+    
+
+</form>
+
+{% endblock %}
