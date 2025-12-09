@@ -884,9 +884,6 @@ def sale_process():
 @views.route("/flash_and_log")
 @login_required
 def flash_and_log(message, category = 'info'):
-    """
-    Saves the flash message to the database and then flashes it to the user's session.
-    """
 
     log_data = {
         'message': message,
@@ -970,7 +967,7 @@ def sales_chart_page():
 
 @views.route("/sales_chart_data", methods=['POST'])
 def sales_chart_data():
-    # 1. Get user input from the form
+
     stock_ids = request.form.getlist('stock_ids') # Expects a list of IDs
     start_date_str = request.form.get('start_date')
     end_date_str = request.form.get('end_date')
@@ -990,7 +987,6 @@ def sales_chart_data():
             if end_date_str:
                 end_date_inclusive = end_date + timedelta(days=1)
             else:
-                # Use datetime.now() if no end date provided
                 end_date_inclusive = end_date
         else:
             end_date = datetime.now()
