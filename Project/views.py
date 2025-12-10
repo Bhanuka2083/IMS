@@ -1038,71 +1038,62 @@ def sales_chart_data():
 @views.route("/download_sales_report", methods=['GET'])
 @login_required
 def download_sales_report():
-    # 1. Fetch Sales Data
     report_data = db.session.query(
-        # --- FIX: Ensure the columns you need are explicitly listed here ---
         Sale.sale_name,
         Sale.buyer_name,
         SaleDetail.quantity_sold,
         SaleDetail.date_created,
         Stock.stock_name,
         Stock.selling_price
-        # ------------------------------------------------------------------
-    ).select_from(Sale # <-- This correctly sets the left side of the join
+        
+    ).select_from(Sale
     ).join(SaleDetail, Sale.id == SaleDetail.sale_id
     ).join(Stock, SaleDetail.stock_id == Stock.id
     ).order_by(SaleDetail.date_created.desc()).all()
 
-    # --- DEBUG STEP: Check the query result ---
     print(f"--- SALES REPORT DEBUG ---")
     print(f"Number of records retrieved: {len(report_data)}")
     if report_data:
         print(f"First record: {report_data[0]}")
     else:
         print("Query returned an EMPTY list.")
-    # --- END DEBUG STEP ---
 
     if not report_data:
-        # This is where your code goes if the list is empty
         flash("No sales data found to generate a report.", category='info')
         return redirect(url_for('views.home'))
 
-    # 1. Use StringIO to create the text CSV content
     proxy = StringIO()
     writer = csv.writer(proxy)
 
-    # ... (Write header and data rows as before) ...
     header = ['Sale ID/Name', 'Buyer Name', 'Item Name', 'Quantity Sold', 
               'Price Per Unit', 'Total Value', 'Date/Time of Sale']
     writer.writerow(header)
+
     for row in report_data:
-        # ... (formatting row data) ...
+        sale_name, buyer_name, quantity_sold, date_created, stock_name, selling_price = row
+        
+        total_value = quantity_sold * selling_price
+        
         data_row = [
-            # ... (your data fields) ...
+            sale_name,
+            buyer_name,
+            stock_name,
+            quantity_sold,
+            f"{selling_price:.2f}",
+            f"{total_value:.2f}",
+            date_created.strftime('%Y-%m-%d %H:%M:%S')
         ]
         writer.writerow(data_row)
         
-    # --- START FIX: Convert StringIO (text) to BytesIO (binary) ---
-    
-    # 2. Get the entire text content from the StringIO buffer
     csv_text = proxy.getvalue()
-    
-    # 3. Create a BytesIO buffer and write the encoded (binary) content to it
     byte_buffer = BytesIO()
-    # Ensure you encode the text data into bytes (utf-8 is standard for CSV)
     byte_buffer.write(csv_text.encode('utf-8')) 
-    
-    # 4. Move the pointer back to the start of the BytesIO buffer for reading
     byte_buffer.seek(0)
     
-    # --- END FIX ---
-
-    # 5. Prepare the response
     filename = f"sales_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
 
-    # Send the file using the binary buffer
     return send_file(
-        byte_buffer, # <-- Use the BytesIO object here
+        byte_buffer, 
         as_attachment=True,
         download_name=filename,
         mimetype='text/csv'
